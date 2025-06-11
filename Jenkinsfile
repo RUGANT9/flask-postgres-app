@@ -1,9 +1,23 @@
 pipeline {
-    agent{
-        docker {
-            image 'alpine/helm:3.14.0'
+    agent {
+        kubernetes {
+        yaml """
+            apiVersion: v1
+            kind: Pod
+            metadata:
+            labels:
+                some-label: helm
+            spec:
+            containers:
+            - name: helm
+                image: alpine/helm:3.14.0
+                command:
+                - cat
+                tty: true
+            """
         }
-    }
+  }
+        
 
     environment {
         CHART_NAME = "flask-postgres-chart"
