@@ -4,7 +4,7 @@ pipeline {
     environment {
         CHART_NAME = "flask-postgres-chart"
         CHART_VERSION = "0.1.${BUILD_NUMBER}"  // Auto versioning
-        REPO_DIR = "/var/www/html/helm-repo"   // Update as per your system
+        REPO_DIR = "/my-helm-repo"   // Update as per your system
         REPO_URL = "http://127.0.0.1:8879"
         RELEASE_NAME = "flask-app"
     }
