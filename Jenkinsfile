@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent{
+        docker {
+            image 'alpine/helm:3.14.0'
+        }
+    }
 
     environment {
         CHART_NAME = "flask-postgres-chart"
