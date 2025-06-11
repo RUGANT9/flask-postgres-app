@@ -1,24 +1,6 @@
 pipeline {
-    agent {
-        kubernetes {
-        yaml """
-            apiVersion: v1
-            kind: Pod
-            metadata:
-            labels:
-                some-label: helm
-            spec:
-            containers:
-            - name: helm
-                image: "alpine/helm:3.14.0"
-                command:
-                - cat
-                tty: true
-            """
-        }
-  }
+    agent any
         
-
     environment {
         CHART_NAME = "flask-postgres-chart"
         CHART_VERSION = "0.1.${BUILD_NUMBER}"  // Auto versioning
