@@ -1,0 +1,14 @@
+flaskApp:
+  image: rugant/flask-postgres:latest
+  replicaCount: 3
+  service:
+    type: NodePort
+    port: 80
+    nodePort: 30080
+
+postgres:
+  image: postgres:14
+  db: testdb
+  user: testuser
+  password: testpass
+  storage: 1Gi
