@@ -32,11 +32,11 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh "helm repo add localrepo ${REPO_URL} || true"
+                sh "helm repo add myrepo ${REPO_URL} || true"
                 sh "helm repo update"
                 sh """
                     helm upgrade --install ${RELEASE_NAME} \
-                    localrepo/${CHART_NAME} \
+                    myrepo/${CHART_NAME} \
                     --version ${CHART_VERSION}
                 """
             }
