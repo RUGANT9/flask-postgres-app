@@ -13,7 +13,7 @@ pipeline {
         stage('Update Chart Version') {
             steps {
                 script {
-                    sh "sed -i '' 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml"
+                    sh "sed -i 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml"
                 }
             }
         }
