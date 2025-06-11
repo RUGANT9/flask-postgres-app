@@ -13,10 +13,10 @@ pipeline {
         stage('Update Chart Version') {
             steps {
                 script {
-                    sh "
+                    sh """
                     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
                     sed -i 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml
-                    "
+                    """
                 }
             }
         }
