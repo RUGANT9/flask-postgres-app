@@ -35,6 +35,12 @@ pipeline {
             }
         }
 
+        stage('Update Repo Index') {
+            steps {
+                sh "/opt/homebrew/bin/helm repo index ${REPO_DIR} --url ${REPO_URL}"
+            }
+        }
+        
         stage('Update Helm Repo Index') {
             steps {
                 sh "helm repo index ${REPO_DIR} --url ${REPO_URL}"
