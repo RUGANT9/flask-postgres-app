@@ -6,7 +6,7 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
         CHART_NAME = "flask-postgres-chart"
         CHART_VERSION = "0.1.${BUILD_NUMBER}"
-        REPO_DIR = "/my-helm-repo"       // Path to your local repo folder
+        REPO_DIR = "/Users/devduttoruganti/jenkins-agent/helm-repo"
         REPO_URL = "http://127.0.0.1:8879" // If you're hosting via `python3 -m http.server`
         RELEASE_NAME = "flask-app"
     }
