@@ -1,5 +1,6 @@
 flaskApp:
-  image: flask-app:latest  # This gets replaced dynamically by Jenkins
+  image: flask-app
+  tag: latest  # This gets replaced dynamically by Jenkins
   imagePullPolicy: Never
   replicaCount: 2
   service:
