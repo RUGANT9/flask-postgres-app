@@ -70,8 +70,7 @@ pipeline {
     agent { label 'docker' }
 
     environment {
-        DOCKERHUB_USER = credentials('DOCKERHUB_USER')
-        DOCKERHUB_PASSWORD = credentials('DOCKERHUB_PASSWORD')
+        DOCKER_CREDS = credentials('dockerhub-creds')
         IMAGE_NAME = 'flask-app'
         IMAGE_TAG = "${BUILD_NUMBER}"
         FULL_IMAGE = "${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}"
@@ -90,11 +89,9 @@ pipeline {
                     script {
                         def FULL_IMAGE = "docker.io/rugant/flask-app:${BUILD_NUMBER}"
                         sh """
-                            docker build -t ${FULL_IMAGE} .
-                            
-                            mkdir -p /tmp/.docker
-                            echo "${DOCKERHUB_PASSWORD}" | docker --config /tmp/.docker login -u "${DOCKERHUB_USER}" --password-stdin
-                            docker --config /tmp/.docker push ${FULL_IMAGE}
+                            docker build -t ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${IMAGE_TAG} .
+                            echo "${DOCKER_CREDS_PSW}" | docker login -u "${DOCKER_CREDS_USR}" --password-stdin
+                            docker push ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${IMAGE_TAG}
                         """
                     }
                 }
