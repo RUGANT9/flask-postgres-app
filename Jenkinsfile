@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "flask-app"
-        IMAGE_TAG = "${BUILD_NUMBER}"
+        IMAGE_TAG = "latest"
         CHART_NAME = "flask-postgres-chart"
         CHART_VERSION = "0.1.${BUILD_NUMBER}"
         REPO_DIR = "/Users/devduttoruganti/jenkins-agent/helm-repo"
