@@ -23,8 +23,8 @@ pipeline {
         stage('Update Chart Version + Image Tag') {
             steps {
                 sh """
-                  sed -i 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml
-                  sed -i 's/^  tag:.*/  tag: "${IMAGE_TAG}"/' ${CHART_NAME}/values.yaml
+                  sed -i '' 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml
+                  sed -i '' 's/^  tag:.*/  tag: "${IMAGE_TAG}"/' ${CHART_NAME}/values.yaml
                 """
             }
         }
