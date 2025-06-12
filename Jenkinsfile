@@ -87,7 +87,7 @@ pipeline {
             steps {
                 dir('app') {
                     sh """
-                        docker build -t ${FULL_IMAGE} .
+                        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                         echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
                         docker push ${FULL_IMAGE}
                     """
