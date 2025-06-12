@@ -86,11 +86,17 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 dir('app') {
-                    sh """
-                        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                        echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
-                        docker push ${FULL_IMAGE}
-                    """
+                    withCredentials([usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKERHUB_USER',
+                        passwordVariable: 'DOCKERHUB_PASSWORD')])
+                        {
+                        sh """
+                            docker build -t ${FULL_IMAGE} .
+                            echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
+                            docker push ${FULL_IMAGE}
+                        """
+                    }
                 }
             }
         }
