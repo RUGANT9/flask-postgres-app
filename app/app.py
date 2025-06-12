@@ -14,7 +14,7 @@ def index():
             host=os.environ["POSTGRES_HOST"],
             port=os.environ.get("POSTGRES_PORT", 5432)
         )
-        return "✅ Connected to PostgreSQL and added the Jenkins CI/CD!!"
+        return "✅ Connected to PostgreSQL and added the Jenkins CI/CD!! finally working"
     except Exception as e:
         return f"❌ Failed to connect: {e}"
 
