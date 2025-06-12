@@ -1,6 +1,5 @@
 flaskApp:
-  image: rugant/flask-app
-  tag: "latest"              # Jenkins will override this
+  image: docker.io/rugant/flask-app:latest  # This gets replaced dynamically by Jenkins
   replicaCount: 2
   service:
     type: NodePort

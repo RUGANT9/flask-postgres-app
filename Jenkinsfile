@@ -83,30 +83,29 @@ pipeline {
     }
 
     stages {
-        stage('Docker Build & Push') {
+        stage('Build & Push Docker Image') {
             steps {
                 dir('app') {
-                    withCredentials([usernamePassword(
-                        credentialsId: 'dockerhub-creds',
-                        usernameVariable: 'DOCKERHUB_USER',
-                        passwordVariable: 'DOCKERHUB_PASSWORD')])
-                        {
+                    script {
+                        def FULL_IMAGE = "docker.io/rugant/flask-app:${BUILD_NUMBER}"
                         sh """
                             docker build -t ${FULL_IMAGE} .
-                            echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
-                            docker push ${FULL_IMAGE}
+                            
+                            mkdir -p /tmp/.docker
+                            echo "${DOCKERHUB_PASSWORD}" | docker --config /tmp/.docker login -u "${DOCKERHUB_USER}" --password-stdin
+                            docker --config /tmp/.docker push ${FULL_IMAGE}
                         """
                     }
                 }
             }
         }
 
+
         stage('Update Chart Version + Image Tag') {
             steps {
                 sh """
-                  sed -i '' 's|^version:.*|version: ${CHART_VERSION}|' ${CHART_NAME}/Chart.yaml
-                  sed -i '' 's|^  image:.*|  image: ${DOCKERHUB_USER}/${IMAGE_NAME}|' ${CHART_NAME}/values.yaml
-                  sed -i '' 's|^  tag:.*|  tag: "${IMAGE_TAG}"|' ${CHART_NAME}/values.yaml
+                    sed -i '' 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml
+                    sed -i '' 's|^  image:.*|  image: docker.io/rugant/flask-app:${BUILD_NUMBER}|' ${CHART_NAME}/values.yaml
                 """
             }
         }
