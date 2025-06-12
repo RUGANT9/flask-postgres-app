@@ -15,7 +15,6 @@ spec:
       containers:
         - name: flask-app
           image: "{{ .Values.flaskApp.image }}:{{ .Values.flaskApp.tag }}"
-          imagePullPolicy: Never
           ports:
             - containerPort: 5000
           env:

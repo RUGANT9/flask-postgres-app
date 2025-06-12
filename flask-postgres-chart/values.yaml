@@ -1,7 +1,6 @@
 flaskApp:
   image: flask-app
   tag: latest  # This gets replaced dynamically by Jenkins
-  imagePullPolicy: Never
   replicaCount: 2
   service:
     type: NodePort
