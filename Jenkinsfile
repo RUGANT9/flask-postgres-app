@@ -70,7 +70,8 @@ pipeline {
     agent { label 'docker' }
 
     environment {
-        DOCKERHUB_USER = 'rugant'
+        DOCKERHUB_USER = credentials('DOCKERHUB_USER')
+        DOCKERHUB_PASSWORD = credentials('DOCKERHUB_PASSWORD')
         IMAGE_NAME = 'flask-app'
         IMAGE_TAG = "${BUILD_NUMBER}"
         FULL_IMAGE = "${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}"
