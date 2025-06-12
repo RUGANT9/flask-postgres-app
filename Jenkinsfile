@@ -65,16 +65,12 @@
 //     }
 // }
 
-
 pipeline {
     agent { label 'docker' }
 
     environment {
-        DOCKER_CREDS = credentials('dockerhub-creds')
-        IMAGE_NAME = 'flask-app'
+        IMAGE_NAME = "flask-app"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        FULL_IMAGE = "${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}"
-
         CHART_NAME = "flask-postgres-chart"
         CHART_VERSION = "0.1.${BUILD_NUMBER}"
         REPO_DIR = "/Users/devduttoruganti/jenkins-agent/helm-repo"
@@ -83,27 +79,19 @@ pipeline {
     }
 
     stages {
-        stage('Build & Push Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 dir('app') {
-                    script {
-                        def FULL_IMAGE = "docker.io/rugant/flask-app:${BUILD_NUMBER}"
-                        sh """
-                            docker build -t ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${IMAGE_TAG} .
-                            echo "${DOCKER_CREDS_PSW}" | docker login -u "${DOCKER_CREDS_USR}" --password-stdin
-                            docker push ${DOCKER_CREDS_USR}/${IMAGE_NAME}:${IMAGE_TAG}
-                        """
-                    }
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
 
-
         stage('Update Chart Version + Image Tag') {
             steps {
                 sh """
-                    sed -i '' 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml
-                    sed -i '' 's|^  image:.*|  image: docker.io/rugant/flask-app:${BUILD_NUMBER}|' ${CHART_NAME}/values.yaml
+                  sed -i '' 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml
+                  sed -i '' 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|' ${CHART_NAME}/values.yaml
                 """
             }
         }
@@ -117,11 +105,10 @@ pipeline {
         stage('Update Helm Repo Index') {
             steps {
                 sh "helm repo index ${REPO_DIR} --url ${REPO_URL}"
-                sleep 2
             }
         }
 
-        stage('Deploy from Local Helm Repo') {
+        stage('Deploy to Kubernetes') {
             steps {
                 sh """
                   helm repo add localrepo ${REPO_URL} || true
@@ -136,7 +123,7 @@ pipeline {
 
     post {
         success {
-            echo "✅ Pushed image ${FULL_IMAGE} and deployed version ${CHART_VERSION} of ${CHART_NAME}."
+            echo "✅ Deployed version ${CHART_VERSION} of ${CHART_NAME} locally."
         }
         failure {
             echo "❌ CI/CD failed."

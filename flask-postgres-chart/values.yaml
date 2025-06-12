@@ -1,5 +1,5 @@
 flaskApp:
-  image: docker.io/rugant/flask-app:latest  # This gets replaced dynamically by Jenkins
+  image: flask-app:latest  # This gets replaced dynamically by Jenkins
   replicaCount: 2
   service:
     type: NodePort
