@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'docker' }  // Run only on mac agent
 
     environment {
         IMAGE_NAME = "flask-app"
