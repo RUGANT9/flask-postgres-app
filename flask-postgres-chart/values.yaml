@@ -1,5 +1,5 @@
 flaskApp:
-  image: flask-app:latest
+  image: rugant/flask-app:latest
   replicaCount: 2
   service:
     type: NodePort
