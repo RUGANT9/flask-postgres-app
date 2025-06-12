@@ -1,6 +1,6 @@
 flaskApp:
   image: rugant/flask-postgres:latest
-  replicaCount: 3
+  replicaCount: 2
   service:
     type: NodePort
     port: 80
