@@ -91,7 +91,7 @@ pipeline {
             steps {
                 sh """
                   sed -i '' 's/^version:.*/version: ${CHART_VERSION}/' ${CHART_NAME}/Chart.yaml
-                  sed -i '' 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|' ${CHART_NAME}/values.yaml
+                  sed -i '' 's|^\s*image:.*|  image: ${IMAGE_NAME}:${IMAGE_TAG}|' ${CHART_NAME}/values.yaml
                 """
             }
         }
