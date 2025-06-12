@@ -1,5 +1,5 @@
 flaskApp:
-  image: rugant/flask-postgres:latest
+  image: flask-app:latest
   replicaCount: 2
   service:
     type: NodePort
